@@ -1,14 +1,14 @@
-apply plugin: 'com.android.library'
+plugins {
+    id 'com.android.library'
+    id 'maven-publish'
+}
 
 android {
-    compileSdkVersion ANDROID_BUILD_COMPILE_SDK_VERSION as int
-    buildToolsVersion ANDROID_BUILD_TOOLS_VERSION
+    compileSdkVersion 30
+    buildToolsVersion '30.0.2'
     defaultConfig {
-        minSdkVersion ANDROID_BUILD_MIN_SDK_VERSION as int
-        targetSdkVersion ANDROID_BUILD_TARGET_SDK_VERSION as int
-//        versionCode VERSIONCODE as int
-        versionCode pkgCode() as int
-        versionName VERSIONNAME
+        minSdkVersion 17
+        targetSdkVersion 30
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -42,4 +42,18 @@ static def pkgCode() {
 
 static def pkgTime() {
     return new Date().format("yyyy-MM-dd")
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+                from components.release
+                groupId = 'youngssj'
+                artifactId = 'qrcodecore'
+                version = '1.0'
+            }
+        }
+    }
 }
